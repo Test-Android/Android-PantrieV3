@@ -16,6 +16,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.nicodangelo.util.ConvertMass"
+            android:label="@string/title_activity_convert_mass" >
+        </activity>
+        <activity
+            android:name="com.nicodangelo.util.ConvertVolume"
+            android:label="@string/title_activity_convert_volume" >
+        </activity>
+        <activity
+            android:name="com.nicodangelo.util.Settings"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".Home"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name="com.nicodangelo.list.ListMain"
+            android:label="@string/title_activity_list_main" >
+        </activity>
     </application>
 
 </manifest>

@@ -3,4 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_convert_mass">ConvertMass</string>
+    <string name="title_activity_convert_volume">ConvertVolume</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_list_main">ListMain</string>
 </resources>
