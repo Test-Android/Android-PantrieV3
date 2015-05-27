@@ -7,11 +7,8 @@ package com.nicodangelo.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -161,36 +158,72 @@ public class DatabaseHandler extends SQLiteOpenHelper
         values.put(KEY_CREATED_AT, getDateTime());
 
         //inset the row
-        if(table.equalsIgnoreCase("items_main"))
+        if (table.equalsIgnoreCase("items_main"))
         {
             long item_id = db.insert(TABLE_ITEMS_MAIN, null, values);
-            return  item_id;
-        }
-        else if(table.equalsIgnoreCase("items_grocery"))
+            return item_id;
+        } else if (table.equalsIgnoreCase("items_grocery"))
         {
             long item_id = db.insert(TABLE_ITEMS_GROCERY, null, values);
-            return  item_id;
-        }
-        else if(table.equalsIgnoreCase("items_custom1"))
+            return item_id;
+        } else if (table.equalsIgnoreCase("items_custom1"))
         {
             long item_id = db.insert(TABLE_ITEMS_CUSTOM1, null, values);
-            return  item_id;
-        }
-        else if(table.equalsIgnoreCase("items_custom2"))
+            return item_id;
+        } else if (table.equalsIgnoreCase("items_custom2"))
         {
             long item_id = db.insert(TABLE_ITEMS_CUSTOM2, null, values);
-            return  item_id;
-        }
-        else if(table.equalsIgnoreCase("items_custom3"))
+            return item_id;
+        } else if (table.equalsIgnoreCase("items_custom3"))
         {
             long item_id = db.insert(TABLE_ITEMS_CUSTOM3, null, values);
-            return  item_id;
-        }
-        else
+            return item_id;
+        } else
         {
             System.out.println("METHOD CreateItem : failed to pick correct table");
             long item_id = -999;
-            System.out.println("METHOD CreateItem Item id mismatch : Item not created id now equals : " + item_id);
+            System.out.println("METHOD CreateItem Item id mismatch : Item not created, id now equals : " + item_id);
+            return item_id;
+        }
+    }
+
+    //Following will update a row in the given table
+    public long updateItem(Item item, String table)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, item.getName());
+        values.put(KEY_AMOUNT, item.getAmount());
+        values.put(KEY_LOW_AMOUNT, item.getAmount());
+        values.put(KEY_CREATED_AT, getDateTime());
+
+        //inset the row
+        if (table.equalsIgnoreCase("items_main"))
+        {
+            long item_id = db.update(TABLE_ITEMS_MAIN, values, KEY_ID + " = ?", new String[] {String.valueOf(item.getId())});
+            return item_id;
+        } else if (table.equalsIgnoreCase("items_grocery"))
+        {
+            long item_id = db.update(TABLE_ITEMS_GROCERY, values, KEY_ID + " = ?", new String[] {String.valueOf(item.getId())});
+            return item_id;
+        } else if (table.equalsIgnoreCase("items_custom1"))
+        {
+            long item_id = db.update(TABLE_ITEMS_CUSTOM1, values, KEY_ID + " = ?", new String[] {String.valueOf(item.getId())});
+            return item_id;
+        } else if (table.equalsIgnoreCase("items_custom2"))
+        {
+            long item_id = db.update(TABLE_ITEMS_CUSTOM2, values, KEY_ID + " = ?", new String[] {String.valueOf(item.getId())});
+            return item_id;
+        } else if (table.equalsIgnoreCase("items_custom3"))
+        {
+            long item_id = db.update(TABLE_ITEMS_CUSTOM3, values, KEY_ID + " = ?", new String[] {String.valueOf(item.getId())});
+            return item_id;
+        } else
+        {
+            System.out.println("METHOD UpdateItem : failed to pick correct table");
+            long item_id = -999;
+            System.out.println("METHOD UpdateItem Item id mismatch : Item not updated, id now equals : " + item_id);
             return item_id;
         }
     }
