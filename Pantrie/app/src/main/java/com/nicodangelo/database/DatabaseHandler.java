@@ -1,7 +1,5 @@
 //@author Jake Cox (so you no who to blame)
 
-//I need this for later
-//create table yourtablename (_id  integer primary key autoincrement, column1 text not null unique, column2 text);
 
 package com.nicodangelo.database;
 
