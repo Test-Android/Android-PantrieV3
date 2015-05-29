@@ -36,6 +36,10 @@
             android:name="com.nicodangelo.list.ListMain"
             android:label="@string/title_activity_list_main" >
         </activity>
+        <activity
+            android:name="com.nicodangelo.list.GroceryTable"
+            android:label="@string/title_activity_grocery_table" >
+        </activity>
     </application>
 
 </manifest>

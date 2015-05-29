@@ -1,20 +1,66 @@
 package com.nicodangelo.pantrie;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import com.nicodangelo.list.AllTables;
+import com.nicodangelo.list.GroceryTable;
 
 
 public class Home extends ActionBarActivity
 {
-
+    Button pantrieMain;
+    Button grocery;
+    Button extraOne;
+    Button extraTwo;
+    Button extraThree;
+    Button extraFour;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-    }
+
+        pantrieMain = (Button) findViewById(R.id.pantrieMain);
+        grocery = (Button) findViewById(R.id.grocery);
+        extraOne = (Button) findViewById(R.id.extraOne);
+        extraTwo = (Button) findViewById(R.id.extraTwo);
+        extraThree = (Button) findViewById(R.id.extraThree);
+        extraFour = (Button) findViewById(R.id.extraFour);
+
+        extraOne.setVisibility(Button.INVISIBLE);
+        extraTwo.setVisibility(Button.INVISIBLE);
+        extraThree.setVisibility(Button.INVISIBLE);
+        extraFour.setVisibility(Button.INVISIBLE);
+
+// THIS IS THE ONCLICKLISTENER FOR THE PANTRIE MAIN LIST BUTTON
+        pantrieMain.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(Home.this,  AllTables.class);
+                i.putExtra("tableName", "items_main");
+                startActivity(i);
+            }
+        });
+// THIS IS THE ONCLICKLISTENER FOR THE GROCERY LIST BUTTON
+        grocery.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(Home.this,  GroceryTable.class);
+                startActivity(i);
+            }
+        });
+//
+}
 
 
     @Override
