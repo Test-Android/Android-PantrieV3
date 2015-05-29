@@ -49,6 +49,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
     private static final String KEY_THEME = "theme";
     private static final String KEY_COLOR = "color";
 
+    private static final String[] ALL_KEYS = new String[] {KEY_ID, KEY_CREATED_AT, KEY_NAME, KEY_AMOUNT, KEY_LOW_AMOUNT};
+
     public DatabaseHandler(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -230,6 +232,266 @@ public class DatabaseHandler extends SQLiteOpenHelper
             return item_id;
         }
     }
+
+    //get a particular Item from the given table with the given ID
+    //I = Item returned
+    public Item getItemRowI(int id, String table)
+    {
+        Item i = new Item();
+        Cursor c = null;
+        SQLiteDatabase db = getReadableDatabase();
+
+        if(table.equalsIgnoreCase("items_main"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_grocery"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_GROCERY, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom1"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_CUSTOM1, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom2"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_CUSTOM2, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom3"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_CUSTOM3, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+
+        if(c == null)
+        {
+            System.out.println("METHOD getItemRow(returns:Item,takes:ID) : failed to Assign the cursor a value");
+        }
+
+        i.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        i.setName(c.getString(c.getColumnIndex(KEY_NAME)));
+        i.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
+        i.setLow_amount(c.getColumnIndex(KEY_LOW_AMOUNT));
+        i.setCreated_at(String.valueOf(c.getColumnIndex(KEY_CREATED_AT)));
+
+        return i;
+    }
+
+    //get a particular Item from the given table with the given Name
+    //I = item returned
+    public Item getItemRowI(String name, String table)
+    {
+        Item i = new Item();
+        Cursor c = null;
+        SQLiteDatabase db = getReadableDatabase();
+
+        if(table.equalsIgnoreCase("items_main"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_grocery"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_GROCERY, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom1"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_CUSTOM1, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom2"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_CUSTOM2, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom3"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_CUSTOM3, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+
+        if(c == null)
+        {
+            System.out.println("METHOD getItemRow(returns:ITEM,takes:NAME) : failed to Assign the cursor a value");
+        }
+
+        i.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        i.setName(c.getString(c.getColumnIndex(KEY_NAME)));
+        i.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
+        i.setLow_amount(c.getColumnIndex(KEY_LOW_AMOUNT));
+        i.setCreated_at(String.valueOf(c.getColumnIndex(KEY_CREATED_AT)));
+
+        return i;
+    }
+
+    //get a particular cursor with an item from the given table with the given id
+    //C = Cursor returned
+    public Cursor getItemRowC(int id, String table)
+    {
+        Cursor c = null;
+        SQLiteDatabase db = getReadableDatabase();
+
+        if(table.equalsIgnoreCase("items_main"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_grocery"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_GROCERY, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom1"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_CUSTOM1, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom2"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_CUSTOM2, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom3"))
+        {
+            String where = KEY_ID + " = " + id;
+            c = db.query(true, TABLE_ITEMS_CUSTOM3, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+
+        if(c == null)
+        {
+            System.out.println("METHOD getItemRow(returns:CURSOR,takes:ID) : failed to Assign the cursor a value");
+        }
+
+        return c;
+    }
+
+    //get a particular cursor with an item from the given table with the given name
+    //C = Cursor returned
+    public Cursor getItemRowC(String name, String table)
+    {
+        Cursor c = null;
+        SQLiteDatabase db = getReadableDatabase();
+
+        if(table.equalsIgnoreCase("items_main"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_grocery"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_GROCERY, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom1"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_CUSTOM1, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom2"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_CUSTOM2, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+        else if(table.equalsIgnoreCase("items_custom3"))
+        {
+            String where = KEY_NAME + " = " + name;
+            c = db.query(true, TABLE_ITEMS_CUSTOM3, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+        }
+
+        if(c == null)
+        {
+            System.out.println("METHOD getItemRow(returns:CURSOR,takes:NAME) : failed to Assign the cursor a value");
+        }
+
+        return c;
+    }
+
+
 
     //getting all the items from the given table
     public List<Item> getAllItems(String table)
