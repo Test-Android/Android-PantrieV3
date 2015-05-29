@@ -5,10 +5,15 @@ package com.nicodangelo.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class DatabaseHandler extends SQLiteOpenHelper
@@ -225,6 +230,47 @@ public class DatabaseHandler extends SQLiteOpenHelper
             return item_id;
         }
     }
+
+    //getting all the items from the given table
+    public List<Item> getAllItems(String table)
+    {
+        List<Item> items = new ArrayList<>();
+        String selectQuery = "";
+        if(table.equalsIgnoreCase("items_main"))
+            selectQuery = "SELECT * FROM " + TABLE_ITEMS_MAIN;
+        else if(table.equalsIgnoreCase("items_grocery"))
+            selectQuery = "SELECT * FROM " + TABLE_ITEMS_GROCERY;
+        else if(table.equalsIgnoreCase("items_custom1"))
+            selectQuery = "SELECT * FROM " + TABLE_ITEMS_CUSTOM1;
+        else if(table.equalsIgnoreCase("items_custom2"))
+            selectQuery = "SELECT * FROM " + TABLE_ITEMS_CUSTOM2;
+        else if(table.equalsIgnoreCase("items_custom3"))
+            selectQuery = "SELECT * FROM " + TABLE_ITEMS_CUSTOM3;
+
+        Log.e(LOG,selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        //loop through the items and add them to the arrayList
+        if(c.moveToFirst())
+        {
+            do{
+                Item i = new Item();
+                i.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+                i.setName(c.getString(c.getColumnIndex(KEY_NAME)));
+                i.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
+                i.setLow_amount(c.getColumnIndex(KEY_LOW_AMOUNT));
+                i.setCreated_at(String.valueOf(c.getColumnIndex(KEY_CREATED_AT)));
+
+                //add the item to last
+                items.add(i);
+            }while(c.moveToNext());
+        }
+        return items;
+    }
+
+
 
 
 
