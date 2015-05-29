@@ -369,7 +369,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
         return i;
     }
 
-    //get a particular cursor with an item from the given table with the given id
+    //get a particular cursor with an item from the given table with the given ID
     //C = Cursor returned
     public Cursor getItemRowC(int id, String table)
     {
