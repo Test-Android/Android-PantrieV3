@@ -10,28 +10,39 @@ import android.widget.Button;
 
 import com.nicodangelo.list.AllTables;
 import com.nicodangelo.list.GroceryTable;
+import com.nicodangelo.util.Settings;
 
 
 public class Home extends ActionBarActivity
 {
     Button pantrieMain;
     Button grocery;
+
     Button extraOne;
     Button extraTwo;
     Button extraThree;
     Button extraFour;
+
+    Button settings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
         pantrieMain = (Button) findViewById(R.id.pantrieMain);
         grocery = (Button) findViewById(R.id.grocery);
+
         extraOne = (Button) findViewById(R.id.extraOne);
         extraTwo = (Button) findViewById(R.id.extraTwo);
         extraThree = (Button) findViewById(R.id.extraThree);
         extraFour = (Button) findViewById(R.id.extraFour);
+
+        settings = (Button) findViewById(R.id.settings);
 
         extraOne.setVisibility(Button.INVISIBLE);
         extraTwo.setVisibility(Button.INVISIBLE);
@@ -59,8 +70,17 @@ public class Home extends ActionBarActivity
                 startActivity(i);
             }
         });
-//
-}
+// THIS IS THE ONCLICKLISTENER FOR THE SETTINGS ACTIVITY BUTTON
+        settings.setOnClickListener(new View.OnClickListener()
+        {
+           @Override
+           public void onClick(View view)
+           {
+               Intent i = new Intent(Home.this, Settings.class);
+               startActivity(i);
+           }
+        });
+    }
 
 
     @Override
