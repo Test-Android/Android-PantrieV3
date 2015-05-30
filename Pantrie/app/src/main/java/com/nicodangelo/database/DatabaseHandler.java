@@ -538,7 +538,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     //getting all the items from the given table
     public List<Item> getAllItems(String table)
     {
-        List<Item> items = new ArrayList<>();
+        List<Item> items = new ArrayList<Item>();
         String selectQuery = "";
         if(table.equalsIgnoreCase("items_main"))
             selectQuery = "SELECT * FROM " + TABLE_ITEMS_MAIN;
