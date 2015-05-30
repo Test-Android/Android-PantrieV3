@@ -575,9 +575,17 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
     //delete all the Items of the given table(be careful they will go away forever!!!)
-    public boolean deleteALL(String table)
+    public void deleteALL(String table)
     {
-
+        Cursor c = getAllRows(table);
+        long rowId = c.getColumnIndexOrThrow(KEY_ID);
+        if(c.moveToFirst())
+        {
+            do{
+                deleteItemRow(c.getInt((int)rowId), table);
+            }while(c.moveToNext());
+        }
+        c.close();
     }
 
     //gets all the information in a table and stores it in a cursor(only good way to do this I think...)
@@ -617,23 +625,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
             return c;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //get the datetime
     private String getDateTime()
