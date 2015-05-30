@@ -10,9 +10,13 @@ import com.nicodangelo.pantrie.R;
 public class GroceryTable extends ActionBarActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_table);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Grocery List");
     }
 
     @Override

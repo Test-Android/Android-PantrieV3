@@ -33,7 +33,7 @@
             android:label="@string/title_activity_home" >
         </activity>
         <activity
-            android:name="com.nicodangelo.list.ListMain"
+            android:name="com.nicodangelo.list.AllTables"
             android:label="@string/title_activity_list_main" >
         </activity>
         <activity

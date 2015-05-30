@@ -68,7 +68,7 @@
             android:layout_width="103dp"
             android:layout_height="59dp"
             android:text="Settings"
-            android:id="@+id/button7"
+            android:id="@+id/settings"
             android:layout_row="19"
             android:layout_column="0" />
     </GridLayout>
