@@ -152,7 +152,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
     //Following will insert a row into the given table
-    public long createItem(Item item, String table)
+    public long createItemRow(Item item, String table)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -193,7 +193,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
     //Following will update a row in the given table
-    public long updateItem(Item item, String table)
+    public long updateItemRow(Item item, String table)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -230,6 +230,50 @@ public class DatabaseHandler extends SQLiteOpenHelper
             long item_id = -999;
             System.out.println("METHOD UpdateItem Item id mismatch : Item not updated, id now equals : " + item_id);
             return item_id;
+        }
+    }
+
+    //Deletes an Item using the Item ID and table
+    public boolean deleteItemRow(int id, String table)
+    {
+        String where = KEY_ID + " = " + id;
+        SQLiteDatabase db = this.getWritableDatabase();
+        if(table.equalsIgnoreCase("items_main"))
+            return db.delete(TABLE_ITEMS_MAIN, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_grocery"))
+            return db.delete(TABLE_ITEMS_GROCERY, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom1"))
+            return db.delete(TABLE_ITEMS_CUSTOM1, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom2"))
+            return db.delete(TABLE_ITEMS_CUSTOM2, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom3"))
+            return db.delete(TABLE_ITEMS_CUSTOM3, where, null) != 0;
+        else
+        {
+            System.out.println("METHOD deleteItem(returns:BOOLEAN,takes:ID) : Item not deleted");
+            return false;
+        }
+    }
+
+    //Deletes an Item using the Item NAME and table (not recommended)
+    public boolean deleteItemRow(String name, String table)
+    {
+        String where = KEY_NAME + " = " + name;
+        SQLiteDatabase db = this.getWritableDatabase();
+        if(table.equalsIgnoreCase("items_main"))
+            return db.delete(TABLE_ITEMS_MAIN, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_grocery"))
+            return db.delete(TABLE_ITEMS_GROCERY, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom1"))
+            return db.delete(TABLE_ITEMS_CUSTOM1, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom2"))
+            return db.delete(TABLE_ITEMS_CUSTOM2, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom3"))
+            return db.delete(TABLE_ITEMS_CUSTOM3, where, null) != 0;
+        else
+        {
+            System.out.println("METHOD deleteItem(returns:BOOLEAN,takes:NAME) : Item not deleted (this method is not reliable ATM)");
+            return false;
         }
     }
 
@@ -491,8 +535,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
         return c;
     }
 
-
-
     //getting all the items from the given table
     public List<Item> getAllItems(String table)
     {
@@ -530,6 +572,50 @@ public class DatabaseHandler extends SQLiteOpenHelper
             }while(c.moveToNext());
         }
         return items;
+    }
+
+    //delete all the Items of the given table(be careful they will go away forever!!!)
+    public boolean deleteALL(String table)
+    {
+
+    }
+
+    //gets all the information in a table and stores it in a cursor(only good way to do this I think...)
+    public Cursor getAllRows(String table)
+    {
+        String chooseTable = "";
+        Cursor c = null;
+
+        if(table.equalsIgnoreCase("table_main"))
+            chooseTable = TABLE_ITEMS_MAIN;
+        else if(table.equalsIgnoreCase("table_grocery"))
+            chooseTable = TABLE_ITEMS_GROCERY;
+        else if(table.equalsIgnoreCase("table_custom1"))
+            chooseTable = TABLE_ITEMS_CUSTOM1;
+        else if(table.equalsIgnoreCase("table_custom2"))
+            chooseTable = TABLE_ITEMS_CUSTOM2;
+        else if(table.equalsIgnoreCase("table_custom3"))
+            chooseTable = TABLE_ITEMS_CUSTOM3;
+        else
+            chooseTable = "NOT_A_TABLE";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String where = null;
+
+        if(!chooseTable.equalsIgnoreCase("NOT_A_TABLE"))
+        {
+            c = db.query(true, chooseTable, ALL_KEYS, where, null, null, null, null, null);
+            if(c != null)
+            {
+                c.moveToFirst();
+            }
+            return c;
+        }
+        else
+        {
+            System.out.println("METHOD getAllRows(returns:CURSOR,takes:table) : failed to assign table to SQL command");
+            return c;
+        }
     }
 
 
