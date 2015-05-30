@@ -589,7 +589,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
     //gets all the information in a table and stores it in a cursor(only good way to do this I think...)
-    public Cursor getAllRows(String table)
+    //also this might be a doup of get all Items... so ignore for the moment (private for the moment)
+    private Cursor getAllRows(String table)
     {
         String chooseTable = "";
         Cursor c = null;
@@ -627,12 +628,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
     //get the datetime
-    private String getDateTime()
+    public String getDateTime()
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
     }
-
 }
