@@ -32,8 +32,8 @@ public class DefaultTableAdapter extends ArrayAdapter
         TextView itemName = (TextView) v.findViewById(R.id.itemName);
         TextView itemAmount = (TextView) v.findViewById(R.id.itemAmount);
 
-        itemName.setText(i.getName());
-        itemAmount.setText(i.getAmount());
+        //itemName.setText(i.getName());
+        //itemAmount.setText(i.getAmount());
 
         return v;
 

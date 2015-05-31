@@ -16,6 +16,7 @@ public class GroceryTable extends ActionBarActivity {
         setContentView(R.layout.activity_grocery_table);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Grocery List");
     }
 
