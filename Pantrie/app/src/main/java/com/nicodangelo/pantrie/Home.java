@@ -56,7 +56,7 @@ public class Home extends ActionBarActivity
             public void onClick(View v)
             {
                 Intent i = new Intent(Home.this,  AllTables.class);
-                i.putExtra("tableName", "items_main");
+//                i.putExtra("tableName", "items_main");
                 startActivity(i);
             }
         });

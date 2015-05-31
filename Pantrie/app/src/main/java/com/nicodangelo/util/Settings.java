@@ -33,11 +33,11 @@ public class Settings extends ActionBarActivity {
         startActivity(i);
     }*/
 
-    @Override
+/*    @Override
     public void onBackPressed() {
         Toast toast = Toast.makeText(getApplicationContext(), "There is no going back now:)", Toast.LENGTH_SHORT);
         toast.show();
-    }
+    } */
 
     public void goBack(View view)
     {

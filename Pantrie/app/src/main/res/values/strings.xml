@@ -9,4 +9,5 @@
     <string name="title_activity_home">Home</string>
     <string name="title_activity_list_main">ListMain</string>
     <string name="title_activity_grocery_table">GroceryTable</string>
+    <string name="title_activity_default_table_adapter">DefaultTableAdapter</string>
 </resources>
