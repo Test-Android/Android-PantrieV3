@@ -10,4 +10,9 @@
     <string name="title_activity_list_main">ListMain</string>
     <string name="title_activity_grocery_table">GroceryTable</string>
     <string name="title_activity_default_table_adapter">DefaultTableAdapter</string>
+    <string name="listAdapterItemName">Large Text</string>
+    <string name="listAdapterItemAmount">Medium Text</string>
+    <string name="listApapterItemLowAmount">Medium Text</string>
+    <string name="tableAdapterItemName">Large Text</string>
+    <string name="tableAdapterItemAmount">Medium Text</string>
 </resources>
