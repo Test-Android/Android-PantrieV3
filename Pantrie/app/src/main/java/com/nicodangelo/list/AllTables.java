@@ -1,8 +1,8 @@
 package com.nicodangelo.list;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.ActionBar;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.ListView;
 
 import com.nicodangelo.database.Item;
@@ -21,8 +21,9 @@ public class AllTables extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_tables);
 
-//        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-//        actionBar.setTitle("Your Pantrie");
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Your Pantrie");
 
         System.out.println("You motherfuckers");
         listMain = new ArrayList<Item>();
@@ -33,7 +34,5 @@ public class AllTables extends ActionBarActivity
         adapter = new DefaultTableAdapter(this,R.layout.default_table_adapter,listMain);
 
         mainList.setAdapter(adapter);
-
-
     }
 }
