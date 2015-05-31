@@ -29,7 +29,7 @@ public class DefaultTableAdapter extends ArrayAdapter
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.default_table_adapter, null);
         }
-        Item i = items.get(0);
+        Item i = items.get(position);
         TextView itemName = (TextView) v.findViewById(R.id.itemName);
         TextView itemAmount = (TextView) v.findViewById(R.id.itemAmount);
 
