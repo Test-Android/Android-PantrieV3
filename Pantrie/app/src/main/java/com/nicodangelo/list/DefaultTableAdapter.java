@@ -20,6 +20,7 @@ public class DefaultTableAdapter extends ArrayAdapter
         super(context, resource, items);
         this.items = items;
     }
+
     public View getView(int position, View convertView, ViewGroup parent)
     {
         View v = convertView;
@@ -28,12 +29,12 @@ public class DefaultTableAdapter extends ArrayAdapter
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.default_table_adapter, null);
         }
-        Item i = items.get(position);
+        Item i = items.get(0);
         TextView itemName = (TextView) v.findViewById(R.id.itemName);
         TextView itemAmount = (TextView) v.findViewById(R.id.itemAmount);
 
-        //itemName.setText(i.getName());
-        //itemAmount.setText(i.getAmount());
+        itemName.setText(i.getName());
+        itemAmount.setText(i.getAmount());
 
         return v;
 
