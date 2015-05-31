@@ -24,7 +24,6 @@ public class AllTables extends ActionBarActivity
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Your Pantrie");
 
-        System.out.println("You motherfuckers");
         listMain = new ArrayList<Item>();
 
         Item apple = new Item(1,"apple",16);
