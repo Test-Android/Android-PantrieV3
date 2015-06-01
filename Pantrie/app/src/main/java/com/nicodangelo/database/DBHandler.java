@@ -37,15 +37,21 @@ public class DBHandler
 
     public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_NAME, KEY_AMOUNT, KEY_LOWAMOUNT};
 
-    // DB info: it's name, and the table we are using (just one).
+    // DB info: it's name, and the table we are using.
     public static final String DATABASE_NAME = "MyDb";
-    public static final String DATABASE_TABLE = "mainTable_";
+    public static final String TABLE_ITEMS_MAIN = "items_main";
+    public static final String TABLE_SETTINGS = "settings";
+    public static final String TABLE_ITEMS_GROCERY = "items_grocery";
+    public static final String TABLE_ITEMS_CUSTOM1 = "items_custom1";
+    public static final String TABLE_ITEMS_CUSTOM2 = "items_custom2";
+    public static final String TABLE_ITEMS_CUSTOM3 = "items_custom3";
+
     // Track DB version if a new version of your app changes the format.
     //this will erase the database and recreate it... atm.
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
 
     private static final String DATABASE_CREATE_SQL =
-            "create table " + DATABASE_TABLE
+            "create table " + TABLE_ITEMS_MAIN
                     + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     // + KEY_{...} + " {type} not null"
                     //	- Key is the column name you created above.
@@ -96,14 +102,14 @@ public class DBHandler
         initialValues.put(KEY_LOWAMOUNT, item.getLow_amount());
 
         // Insert it into the database.
-        return db.insert(DATABASE_TABLE, null, initialValues);
+        return db.insert(TABLE_ITEMS_MAIN, null, initialValues);
     }
 
     // Delete a row from the database, by rowId (primary key)
     public boolean deleteRow(long rowId)
     {
         String where = KEY_ROWID + "=" + rowId;
-        return db.delete(DATABASE_TABLE, where, null) != 0;
+        return db.delete(TABLE_ITEMS_MAIN, where, null) != 0;
     }
 
     // Delete a row from the database, by item name (name)
@@ -111,7 +117,7 @@ public class DBHandler
     public boolean deleteRow(String name)
     {
         String where = KEY_NAME + "=" + name;
-        return db.delete(DATABASE_TABLE, where, null) != 0;
+        return db.delete(TABLE_ITEMS_MAIN, where, null) != 0;
     }
 
     //guess what this does:)
@@ -136,7 +142,7 @@ public class DBHandler
     public Cursor getAllRows()
     {
         String where = null;
-        Cursor c = 	db.query(true, DATABASE_TABLE, ALL_KEYS,
+        Cursor c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
                 where, null, null, null, null, null);
         if (c != null)
         {
@@ -150,7 +156,7 @@ public class DBHandler
     {
         Item item = new Item();
         String where = KEY_ROWID + "=" + rowId;
-        Cursor c = 	db.query(true, DATABASE_TABLE, ALL_KEYS,
+        Cursor c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
                 where, null, null, null, null, null);
         if (c != null) {
             c.moveToFirst();
@@ -165,7 +171,7 @@ public class DBHandler
     public Cursor getRow(String name)
     {
         String where = KEY_NAME + "=" + name;
-        Cursor c = 	db.query(true, DATABASE_TABLE, ALL_KEYS,
+        Cursor c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
                 where, null, null, null, null, null);
         if (c != null) {
             c.moveToFirst();
@@ -184,7 +190,7 @@ public class DBHandler
         newValues.put(KEY_LOWAMOUNT, lowAmount);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE, newValues, where, null) != 0;
+        return db.update(TABLE_ITEMS_MAIN, newValues, where, null) != 0;
     }
 
 
@@ -218,7 +224,7 @@ public class DBHandler
                     + " to " + newVersion + ", which will destroy all old data!");
 
             // Destroy old database:
-            _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+            _db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS_MAIN);
 
             // Recreate new database:
             onCreate(_db);
