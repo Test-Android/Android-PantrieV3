@@ -2,13 +2,15 @@
 
 package com.nicodangelo.database;
 
+import android.provider.ContactsContract;
+
 public class Item
 {
-    int id;
-    String name;
-    int amount;
-    int low_amount;
-    String created_at;
+    private int id;
+    private String name;
+    private int amount;
+    private int low_amount;
+    private String created_at;
 
     //constructors
     public Item(){}
@@ -22,6 +24,10 @@ public class Item
     {
         this.id = id;
         this.name = name;
+
+        this.setAmount(0);
+        this.setLow_amount(0);
+        this.setCreated_at(DatabaseHandler.getDateAndTime());
     }
 
     public Item(int id, String name, int amount)
@@ -29,6 +35,9 @@ public class Item
         this.id = id;
         this.name = name;
         this.amount = amount;
+
+        this.setLow_amount(0);
+        this.setCreated_at(DatabaseHandler.getDateAndTime());
     }
 
     public Item(int low_amount, int id, String name, int amount)
@@ -37,6 +46,8 @@ public class Item
         this.id = id;
         this.name = name;
         this.amount = amount;
+
+        this.setCreated_at(DatabaseHandler.getDateAndTime());
     }
 
     public Item(String created_at, int id, String name, int amount, int low_amount)

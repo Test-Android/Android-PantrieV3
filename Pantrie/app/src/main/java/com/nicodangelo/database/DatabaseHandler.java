@@ -22,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     private static final String LOG = "DatabaseHandler";
 
     //Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     //Database Name
     private static final String DATABASE_NAME = "pantrie_database";
@@ -133,6 +133,13 @@ public class DatabaseHandler extends SQLiteOpenHelper
         db.execSQL(CREATE_TABLE_ITEMS_CUSTOM3);
     }
 
+    // Open the database connection.
+    public DatabaseHandler open()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return this;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
@@ -157,34 +164,44 @@ public class DatabaseHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        System.out.println(item.getName());
         values.put(KEY_NAME, item.getName());
+        System.out.println(item.getAmount());
         values.put(KEY_AMOUNT, item.getAmount());
-        values.put(KEY_LOW_AMOUNT, item.getAmount());
+        System.out.println(item.getLow_amount());
+        values.put(KEY_LOW_AMOUNT, item.getLow_amount());
+        System.out.println(item.getCreated_at());
         values.put(KEY_CREATED_AT, getDateTime());
 
         //inset the row
         if (table.equalsIgnoreCase("items_main"))
         {
+            System.out.println(1);
             long item_id = db.insert(TABLE_ITEMS_MAIN, null, values);
             return item_id;
         } else if (table.equalsIgnoreCase("items_grocery"))
         {
+            System.out.println(2);
             long item_id = db.insert(TABLE_ITEMS_GROCERY, null, values);
             return item_id;
         } else if (table.equalsIgnoreCase("items_custom1"))
         {
+            System.out.println(3);
             long item_id = db.insert(TABLE_ITEMS_CUSTOM1, null, values);
             return item_id;
         } else if (table.equalsIgnoreCase("items_custom2"))
         {
+            System.out.println(4);
             long item_id = db.insert(TABLE_ITEMS_CUSTOM2, null, values);
             return item_id;
         } else if (table.equalsIgnoreCase("items_custom3"))
         {
+            System.out.println(5);
             long item_id = db.insert(TABLE_ITEMS_CUSTOM3, null, values);
             return item_id;
         } else
         {
+            System.out.println(6);
             System.out.println("METHOD CreateItem : failed to pick correct table");
             long item_id = -999;
             System.out.println("METHOD CreateItem Item id mismatch : Item not created, id now equals : " + item_id);
@@ -629,6 +646,15 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
     //get the datetime
     public String getDateTime()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    //get the datetime
+    public static String getDateAndTime()
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
