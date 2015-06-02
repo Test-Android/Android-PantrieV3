@@ -1,5 +1,6 @@
 //@author Jake Cox
 //this is the same as the db handler but should actually work... implementing it is a bit tricky though:)
+//TODO: add in the KEY_CREATED_AT to all the things, and fix up adn add settings
 // ------------------------------------ DBAdapter ---------------------------------------------
 
 package com.nicodangelo.database;
@@ -54,7 +55,7 @@ public class DBHandler
 
     // Track DB version if a new version of your app changes the format.
     //this will erase the database and recreate it... atm.
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 14;
 
     private static final String DATABASE_CREATE_SQL_ITEMS_MAIN =
             "create table " + TABLE_ITEMS_MAIN
@@ -156,7 +157,7 @@ public class DBHandler
     }
 
     // Add a new set of values to the database.
-    public long insertRow(Item item)
+    public long insertRow(Item item, String table)
     {
         // Create row's data:
         ContentValues initialValues = new ContentValues();
@@ -165,34 +166,72 @@ public class DBHandler
         initialValues.put(KEY_LOW_AMOUNT, item.getLow_amount());
 
         // Insert it into the database.
-        return db.insert(TABLE_ITEMS_MAIN, null, initialValues);
+        if(table.equalsIgnoreCase("items_main"))
+            return db.insert(TABLE_ITEMS_MAIN, null, initialValues);
+        else if(table.equalsIgnoreCase("items_custom1"))
+            return db.insert(TABLE_ITEMS_CUSTOM1, null, initialValues);
+        else if(table.equalsIgnoreCase("items_custom2"))
+            return db.insert(TABLE_ITEMS_CUSTOM2, null, initialValues);
+        else if(table.equalsIgnoreCase("items_custom3"))
+            return db.insert(TABLE_ITEMS_CUSTOM3, null, initialValues);
+        else
+        {
+            System.out.println("METHOD: insertRow(Item item, String table) -- table not recognized correctly");
+            return -999;
+        }
     }
 
     // Delete a row from the database, by rowId (primary key)
-    public boolean deleteRow(long rowId)
+    public boolean deleteRow(long rowId, String table)
     {
         String where = KEY_ID + "=" + rowId;
-        return db.delete(TABLE_ITEMS_MAIN, where, null) != 0;
+
+        if(table.equalsIgnoreCase("items_main"))
+            return db.delete(TABLE_ITEMS_MAIN, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom1"))
+            return db.delete(TABLE_ITEMS_CUSTOM1, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom2"))
+            return db.delete(TABLE_ITEMS_CUSTOM2, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom3"))
+            return db.delete(TABLE_ITEMS_CUSTOM3, where, null) != 0;
+        else
+        {
+            System.out.println("METHOD: deleteRow(long rowId, String table) -- table not recognized correctly");
+            return false;
+        }
     }
 
     // Delete a row from the database, by item name (name)
     //keeping in mind that it will delete all items with that same name:)
-    public boolean deleteRow(String name)
+    public boolean deleteRow(String name, String table)
     {
         String where = KEY_NAME + "=" + name;
-        return db.delete(TABLE_ITEMS_MAIN, where, null) != 0;
+
+        if(table.equalsIgnoreCase("items_main"))
+            return db.delete(TABLE_ITEMS_MAIN, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom1"))
+            return db.delete(TABLE_ITEMS_CUSTOM1, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom2"))
+            return db.delete(TABLE_ITEMS_CUSTOM2, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom3"))
+            return db.delete(TABLE_ITEMS_CUSTOM3, where, null) != 0;
+        else
+        {
+            System.out.println("METHOD: deleteRow(String name, String table) -- table not recognized correctly");
+            return false;
+        }
     }
 
     //guess what this does:)
-    public void deleteAll()
+    public void deleteAll(String table)
     {
-        Cursor c = getAllRows();
+        Cursor c = getAllRows(table);
         long rowId = c.getColumnIndexOrThrow(KEY_ID);
         if (c.moveToFirst())
         {
             do
             {
-                deleteRow(c.getLong((int) rowId));
+                deleteRow(c.getLong((int) rowId), table);
             }
             while (c.moveToNext());
         }
@@ -202,11 +241,36 @@ public class DBHandler
     // Return all data in the database.
     //this one I just copied I really dont quite understand
     //how it works:)
-    public Cursor getAllRows()
+    public Cursor getAllRows(String table)
     {
         String where = null;
-        Cursor c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
-                where, null, null, null, null, null);
+        Cursor c = null;
+
+        if(table.equalsIgnoreCase("items_main"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom1"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM1, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom2"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM2, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom3"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM3, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else
+        {
+            System.out.println("METHOD: getAllRows(String table) -- table not recognized correctly");
+        }
+
         if (c != null)
         {
             c.moveToFirst();
@@ -215,12 +279,82 @@ public class DBHandler
     }
 
     // Get a specific row (by rowId)
-    public Item getRow(long rowId)
+    public Item getRowItem(long rowId, String table)
     {
         Item item = new Item();
         String where = KEY_ID + "=" + rowId;
-        Cursor c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
-                where, null, null, null, null, null);
+        Cursor c = null;
+
+        if(table.equalsIgnoreCase("items_main"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom1"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM1, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom2"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM2, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom3"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM3, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else
+        {
+            System.out.println("METHOD: getRowItem(long rowId, String table) -- table not recognized correctly");
+        }
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        if(c != null)
+        {
+            item.setName(c.getString(c.getColumnIndex(KEY_NAME)));
+            item.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
+        }
+
+        return item;
+    }
+
+    // Get a specific row (by rowId)
+    public Item getRowItem(String name, String table)
+    {
+        Item item = new Item();
+        String where = KEY_NAME + "=" + name;
+        Cursor c = null;
+
+        if(table.equalsIgnoreCase("items_main"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom1"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM1, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom2"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM2, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom3"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM3, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else
+        {
+            System.out.println("METHOD: getRowItem(String name, String table) -- table not recognized correctly");
+        }
+
         if (c != null) {
             c.moveToFirst();
         }
@@ -230,12 +364,75 @@ public class DBHandler
 
         return item;
     }
+
+    // Get a specific row (by rowId)
+    public Cursor getRowCursor(long rowId, String table)
+    {
+        String where = KEY_ID + "=" + rowId;
+        Cursor c = null;
+
+        if(table.equalsIgnoreCase("items_main"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom1"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM1, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom2"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM2, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom3"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM3, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else
+        {
+            System.out.println("METHOD: getRowCursor(long rowId, String table) -- table not recognized correctly");
+        }
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
     // Get a specific row (by name)
-    public Cursor getRow(String name)
+    public Cursor getRowCursor(String name, String table)
     {
         String where = KEY_NAME + "=" + name;
-        Cursor c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
-                where, null, null, null, null, null);
+        Cursor c = null;
+
+        if(table.equalsIgnoreCase("items_main"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom1"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM1, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom2"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM2, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else if(table.equalsIgnoreCase("items_custom3"))
+        {
+            c = 	db.query(true, TABLE_ITEMS_CUSTOM3, ALL_KEYS,
+                    where, null, null, null, null, null);
+        }
+        else
+        {
+            System.out.println("METHOD: getRowCursor(String name, String table) -- table not recognized correctly");
+        }
+
         if (c != null) {
             c.moveToFirst();
         }
@@ -243,7 +440,7 @@ public class DBHandler
     }
 
     // Change an existing row to be equal to new data.
-    public boolean updateRow(long rowId, String name, int amount, int lowAmount)
+    public boolean updateRow(long rowId, String name, int amount, int lowAmount, String table)
     {
         String where = KEY_ID + "=" + rowId;
         // Create row's data:
@@ -253,7 +450,21 @@ public class DBHandler
         newValues.put(KEY_LOW_AMOUNT, lowAmount);
 
         // Insert it into the database.
-        return db.update(TABLE_ITEMS_MAIN, newValues, where, null) != 0;
+        if(table.equalsIgnoreCase("items_main"))
+            return db.update(TABLE_ITEMS_MAIN, newValues, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom1"))
+            return db.update(TABLE_ITEMS_CUSTOM1, newValues, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom2"))
+            return db.update(TABLE_ITEMS_CUSTOM2, newValues, where, null) != 0;
+        else if(table.equalsIgnoreCase("items_custom3"))
+            return db.update(TABLE_ITEMS_CUSTOM3, newValues, where, null) != 0;
+        else
+        {
+            System.out.println("METHOD: updateRow(long rowId, String name, int amount, int lowAmount, String table) -- table not recognized correctly");
+            return false;
+        }
+
+
     }
 
 
@@ -292,6 +503,11 @@ public class DBHandler
 
             // Destroy old database:
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS_MAIN);
+            _db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS_GROCERY);
+            _db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS_CUSTOM1);
+            _db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS_CUSTOM2);
+            _db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS_CUSTOM3);
+
 
             // Recreate new database:
             onCreate(_db);

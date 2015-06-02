@@ -27,7 +27,7 @@ public class Item
 
         this.setAmount(0);
         this.setLow_amount(0);
-        this.setCreated_at(DatabaseHandler.getDateAndTime());
+        this.setCreated_at(DBHandler.getDateAndTime());
     }
 
     public Item(int id, String name, int amount)
@@ -37,7 +37,7 @@ public class Item
         this.amount = amount;
 
         this.setLow_amount(0);
-        this.setCreated_at(DatabaseHandler.getDateAndTime());
+        this.setCreated_at(DBHandler.getDateAndTime());
     }
 
     public Item(int low_amount, int id, String name, int amount)
@@ -47,7 +47,7 @@ public class Item
         this.name = name;
         this.amount = amount;
 
-        this.setCreated_at(DatabaseHandler.getDateAndTime());
+        this.setCreated_at(DBHandler.getDateAndTime());
     }
 
     public Item(String created_at, int id, String name, int amount, int low_amount)

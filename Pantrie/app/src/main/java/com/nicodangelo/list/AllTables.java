@@ -35,7 +35,7 @@ public class AllTables extends ActionBarActivity
         db = new DBHandler(this);
         Item apple = new Item(0,"apple",16);
         db.open();
-        db.insertRow(apple);
+        db.insertRow(apple,"items_main");
 
         listMain = new ArrayList<Item>();
 
@@ -45,17 +45,18 @@ public class AllTables extends ActionBarActivity
         adapter = new DefaultTableAdapter(this,R.layout.default_table_adapter,listMain);
 
         mainList.setAdapter(adapter);
+
     }
     private void fillArrayList()
     {
         Item tempItem = new Item();
-        tempItem = db.getRow(1);
+        tempItem = db.getRowItem(1, "items_main");
         listMain.add(tempItem);
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         db.close();
+        super.onDestroy();
     }
 }
