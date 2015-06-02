@@ -21,7 +21,6 @@ public class Home extends ActionBarActivity
     Button extraOne;
     Button extraTwo;
     Button extraThree;
-    Button extraFour;
 
     Button settings;
 
@@ -40,22 +39,18 @@ public class Home extends ActionBarActivity
         extraOne = (Button) findViewById(R.id.extraOne);
         extraTwo = (Button) findViewById(R.id.extraTwo);
         extraThree = (Button) findViewById(R.id.extraThree);
-        extraFour = (Button) findViewById(R.id.extraFour);
 
         settings = (Button) findViewById(R.id.settings);
 
         extraOne.setVisibility(Button.INVISIBLE);
         extraTwo.setVisibility(Button.INVISIBLE);
         extraThree.setVisibility(Button.INVISIBLE);
-        extraFour.setVisibility(Button.INVISIBLE);
 
 // THIS IS THE ONCLICKLISTENER FOR THE PANTRIE MAIN LIST BUTTON
-        pantrieMain.setOnClickListener(new View.OnClickListener()
-        {
+        pantrieMain.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                Intent i = new Intent(Home.this,  AllTables.class);
+            public void onClick(View v) {
+                Intent i = new Intent(Home.this, AllTables.class);
                 i.putExtra("tableName", "items_main");
                 startActivity(i);
             }
@@ -67,6 +62,36 @@ public class Home extends ActionBarActivity
             public void onClick(View v)
             {
                 Intent i = new Intent(Home.this,  GroceryTable.class);
+                startActivity(i);
+            }
+        });
+// THIS IS THE ONCLICKLISTENER FOR THE EXTRAONE LIST BUTTON
+        extraOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(Home.this, AllTables.class);
+                i.putExtra("tableName", "items_custom1");
+                startActivity(i);
+            }
+        });
+// THIS IS THE ONCLICKLISTENER FOR THE EXTRATWO LIST BUTTON
+        extraOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(Home.this, AllTables.class);
+                i.putExtra("tableName", "items_custom2");
+                startActivity(i);
+            }
+        });
+// THIS IS THE ONCLICKLISTENER FOR THE EXTRATHREE LIST BUTTON
+        extraOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(Home.this, AllTables.class);
+                i.putExtra("tableName", "items_custom3");
                 startActivity(i);
             }
         });

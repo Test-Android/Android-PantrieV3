@@ -22,6 +22,9 @@ public class Settings extends ActionBarActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -36,11 +39,8 @@ public class Settings extends ActionBarActivity {
         startActivity(i);
     }*/
 
-/*    @Override
-    public void onBackPressed() {
-        Toast toast = Toast.makeText(getApplicationContext(), "There is no going back now:)", Toast.LENGTH_SHORT);
-        toast.show();
-    } */
+    @Override
+    public void onBackPressed() {String why = "Fuck ya chicken strips.";}
 
     public void goBack(View view)
     {
@@ -49,6 +49,7 @@ public class Settings extends ActionBarActivity {
     }
 
     //TODO:fix Database Handler*public void deleteDB(View view)
+    public void deleteAllItems(View view)
     {
         DBHandler db = new DBHandler(this);
         db.open();
