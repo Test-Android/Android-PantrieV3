@@ -19,6 +19,7 @@ public class AllTables extends ActionBarActivity
     ArrayList<Item> listMain;
     String tableName;
     DBHandler db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

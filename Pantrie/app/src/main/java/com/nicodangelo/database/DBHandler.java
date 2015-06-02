@@ -11,6 +11,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class DBHandler
 {
     /////////////////////////////////////////////////////////////////////
@@ -21,21 +25,23 @@ public class DBHandler
     private static final String TAG = "DBAdapter";
 
     // DB Fields
-    public static final String KEY_ROWID = "_id";
+    public static final String KEY_ID = "_id";
     public static final int COL_ROWID = 0;
 
-    //these are the fields for the database
+    //these are the fields for the database (Not settings)
     public static final String KEY_NAME = "name";
     public static final String KEY_AMOUNT = "amount";
-    public static final String KEY_LOWAMOUNT = "lowamount";
+    public static final String KEY_LOW_AMOUNT = "low_amount";
+    public static final String KEY_CREATED_AT = "created_at";
 
     //field numbers (0 = KEY_ROWID, 1=...)
     //these give you access to a particular field by referencing its name
     public static final int COL_NAME = 1;
     public static final int COL_AMOUNT = 2;
-    public static final int COL_LOWAMOUNT = 3;
+    public static final int COL_LOW_AMOUNT = 3;
+    public static final int COL_CREATED_AT = 4;
 
-    public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_NAME, KEY_AMOUNT, KEY_LOWAMOUNT};
+    public static final String[] ALL_KEYS = new String[] {KEY_ID, KEY_NAME, KEY_AMOUNT, KEY_LOW_AMOUNT, KEY_CREATED_AT};
 
     // DB info: it's name, and the table we are using.
     public static final String DATABASE_NAME = "MyDb";
@@ -48,19 +54,76 @@ public class DBHandler
 
     // Track DB version if a new version of your app changes the format.
     //this will erase the database and recreate it... atm.
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
 
-    private static final String DATABASE_CREATE_SQL =
+    private static final String DATABASE_CREATE_SQL_ITEMS_MAIN =
             "create table " + TABLE_ITEMS_MAIN
-                    + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + " (" + KEY_ID + " integer primary key autoincrement, "
                     // + KEY_{...} + " {type} not null"
                     //	- Key is the column name you created above.
                     //	- {type} is one of: text, integer, real, blob
                     //  - "not null" means it is a required field (must be given a value).
                     // NOTE: All must be comma separated (end of line!) Last one must have NO comma!!
-                    + KEY_NAME + " text not null, "
+                    + KEY_NAME + " text not null unique, "
                     + KEY_AMOUNT + " integer not null, "
-                    + KEY_LOWAMOUNT + " integer not null"
+                    + KEY_LOW_AMOUNT + " integer not null,"
+                    + KEY_CREATED_AT + " datetime "
+                    + ");";
+
+    private static final String DATABASE_CREATE_SQL_ITEMS_GROCERY =
+            "create table " + TABLE_ITEMS_GROCERY
+                    + " (" + KEY_ID + " integer primary key autoincrement, "
+                    // + KEY_{...} + " {type} not null"
+                    //	- Key is the column name you created above.
+                    //	- {type} is one of: text, integer, real, blob
+                    //  - "not null" means it is a required field (must be given a value).
+                    // NOTE: All must be comma separated (end of line!) Last one must have NO comma!!
+                    + KEY_NAME + " text not null unique, "
+                    + KEY_AMOUNT + " integer not null, "
+                    + KEY_LOW_AMOUNT + " integer not null,"
+                    + KEY_CREATED_AT + " datetime "
+                    + ");";
+
+    private static final String DATABASE_CREATE_SQL_ITEMS_CUSTOM1 =
+            "create table " + TABLE_ITEMS_CUSTOM1
+                    + " (" + KEY_ID + " integer primary key autoincrement, "
+                    // + KEY_{...} + " {type} not null"
+                    //	- Key is the column name you created above.
+                    //	- {type} is one of: text, integer, real, blob
+                    //  - "not null" means it is a required field (must be given a value).
+                    // NOTE: All must be comma separated (end of line!) Last one must have NO comma!!
+                    + KEY_NAME + " text not null unique, "
+                    + KEY_AMOUNT + " integer not null, "
+                    + KEY_LOW_AMOUNT + " integer not null,"
+                    + KEY_CREATED_AT + " datetime "
+                    + ");";
+
+    private static final String DATABASE_CREATE_SQL_ITEMS_CUSTOM2 =
+            "create table " + TABLE_ITEMS_CUSTOM2
+                    + " (" + KEY_ID + " integer primary key autoincrement, "
+                    // + KEY_{...} + " {type} not null"
+                    //	- Key is the column name you created above.
+                    //	- {type} is one of: text, integer, real, blob
+                    //  - "not null" means it is a required field (must be given a value).
+                    // NOTE: All must be comma separated (end of line!) Last one must have NO comma!!
+                    + KEY_NAME + " text not null unique, "
+                    + KEY_AMOUNT + " integer not null, "
+                    + KEY_LOW_AMOUNT + " integer not null,"
+                    + KEY_CREATED_AT + " datetime "
+                    + ");";
+
+    private static final String DATABASE_CREATE_SQL_ITEMS_CUSTOM3 =
+            "create table " + TABLE_ITEMS_CUSTOM3
+                    + " (" + KEY_ID + " integer primary key autoincrement, "
+                    // + KEY_{...} + " {type} not null"
+                    //	- Key is the column name you created above.
+                    //	- {type} is one of: text, integer, real, blob
+                    //  - "not null" means it is a required field (must be given a value).
+                    // NOTE: All must be comma separated (end of line!) Last one must have NO comma!!
+                    + KEY_NAME + " text not null unique, "
+                    + KEY_AMOUNT + " integer not null, "
+                    + KEY_LOW_AMOUNT + " integer not null,"
+                    + KEY_CREATED_AT + " datetime "
                     + ");";
 
     // Context of application who uses us.
@@ -99,7 +162,7 @@ public class DBHandler
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_NAME, item.getName());
         initialValues.put(KEY_AMOUNT, item.getAmount());
-        initialValues.put(KEY_LOWAMOUNT, item.getLow_amount());
+        initialValues.put(KEY_LOW_AMOUNT, item.getLow_amount());
 
         // Insert it into the database.
         return db.insert(TABLE_ITEMS_MAIN, null, initialValues);
@@ -108,7 +171,7 @@ public class DBHandler
     // Delete a row from the database, by rowId (primary key)
     public boolean deleteRow(long rowId)
     {
-        String where = KEY_ROWID + "=" + rowId;
+        String where = KEY_ID + "=" + rowId;
         return db.delete(TABLE_ITEMS_MAIN, where, null) != 0;
     }
 
@@ -124,7 +187,7 @@ public class DBHandler
     public void deleteAll()
     {
         Cursor c = getAllRows();
-        long rowId = c.getColumnIndexOrThrow(KEY_ROWID);
+        long rowId = c.getColumnIndexOrThrow(KEY_ID);
         if (c.moveToFirst())
         {
             do
@@ -155,7 +218,7 @@ public class DBHandler
     public Item getRow(long rowId)
     {
         Item item = new Item();
-        String where = KEY_ROWID + "=" + rowId;
+        String where = KEY_ID + "=" + rowId;
         Cursor c = 	db.query(true, TABLE_ITEMS_MAIN, ALL_KEYS,
                 where, null, null, null, null, null);
         if (c != null) {
@@ -182,12 +245,12 @@ public class DBHandler
     // Change an existing row to be equal to new data.
     public boolean updateRow(long rowId, String name, int amount, int lowAmount)
     {
-        String where = KEY_ROWID + "=" + rowId;
+        String where = KEY_ID + "=" + rowId;
         // Create row's data:
         ContentValues newValues = new ContentValues();
         newValues.put(KEY_NAME, name);
         newValues.put(KEY_AMOUNT, amount);
-        newValues.put(KEY_LOWAMOUNT, lowAmount);
+        newValues.put(KEY_LOW_AMOUNT, lowAmount);
 
         // Insert it into the database.
         return db.update(TABLE_ITEMS_MAIN, newValues, where, null) != 0;
@@ -214,7 +277,11 @@ public class DBHandler
         @Override
         public void onCreate(SQLiteDatabase _db)
         {
-            _db.execSQL(DATABASE_CREATE_SQL);
+            _db.execSQL(DATABASE_CREATE_SQL_ITEMS_MAIN);
+            _db.execSQL(DATABASE_CREATE_SQL_ITEMS_GROCERY);
+            _db.execSQL(DATABASE_CREATE_SQL_ITEMS_CUSTOM1);
+            _db.execSQL(DATABASE_CREATE_SQL_ITEMS_CUSTOM2);
+            _db.execSQL(DATABASE_CREATE_SQL_ITEMS_CUSTOM3);
         }
 
         @Override
@@ -229,5 +296,23 @@ public class DBHandler
             // Recreate new database:
             onCreate(_db);
         }
+    }
+
+    //get the datetime
+    public String getDateTime()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    //get the datetime
+    public static String getDateAndTime()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 }
