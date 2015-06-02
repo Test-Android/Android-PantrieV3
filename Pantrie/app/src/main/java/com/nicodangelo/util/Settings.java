@@ -1,5 +1,6 @@
 package com.nicodangelo.util;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.nicodangelo.database.DBHandler;
+import com.nicodangelo.list.AllTables;
 import com.nicodangelo.pantrie.Home;
 import com.nicodangelo.pantrie.R;
 
@@ -45,8 +48,7 @@ public class Settings extends ActionBarActivity {
         startActivity(i);
     }
 
-    //TODO:fix Database Handler
-    /*public void deleteDB(View view)
+    //TODO:fix Database Handler*public void deleteDB(View view)
     {
         DBHandler db = new DBHandler(this);
         db.open();
@@ -54,6 +56,6 @@ public class Settings extends ActionBarActivity {
         db.close();
         Intent i = new Intent(Settings.this, AllTables.class);
         startActivity(i);
-    }*/
+    }
 }
 
